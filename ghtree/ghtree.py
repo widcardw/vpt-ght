@@ -47,10 +47,12 @@ class GHTInternalNode:
         self.right = right
         self.depth = depth
 
+GHTreeNode = TypeVar('GHTreeNode', GHTInternalNode, PivotTable)
+
 def build_ghtree(points: Iterable[_T],
                  dist_fn: Callable[[_T, _T], float] = euclidean_distance,
                  max_leaf_size = 10
-                 ) -> Union[GHTInternalNode, PivotTable]:
+                 ) -> GHTreeNode:
     '''
     建立 GH 树
 
@@ -60,7 +62,7 @@ def build_ghtree(points: Iterable[_T],
     '''
     return _build_ghtree_recursive(points, dist_fn, max_leaf_size)
 
-def range_query(node: Union[GHTInternalNode, PivotTable],
+def range_query(node: GHTreeNode,
                 query: _T,
                 radius: float,
                 dist_fn: Callable[[_T, _T], float] = euclidean_distance):
@@ -93,7 +95,7 @@ def _build_ghtree_recursive(data: Iterable[_T],
                             dist_fn: Callable[[_T, _T], float],
                             depth = 0,
                             max_leaf_size = 10
-                            ) -> Union[GHTInternalNode, PivotTable]:
+                            ) -> GHTreeNode:
     '''
     内部调用，递归建立 GH 树
 

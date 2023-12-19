@@ -39,6 +39,7 @@ class PivotTable:
 
 # TypeAlias 要 Python 3.12 才能支持 ¯\_(ツ)_/¯
 # VPTreeNode = TypeAlias('VPTreeNode', Union[VPTInternalNode, PivotTable])
+VPTreeNode = TypeVar('VPTreeNode', VPTInternalNode, PivotTable)
 
 def _select_pivot(data: Iterable[_T]) -> _T:
     '''选择支撑点，随机选取'''
@@ -62,7 +63,7 @@ def _build_vptree_recursive(data: Iterable[_T],
                             dist_fn: Callable[[_T, _T], float],
                             depth = 0,
                             max_leaf_size = 10
-                            ) -> Union[VPTInternalNode, PivotTable]:
+                            ) -> VPTreeNode:
     '''
     内部调用，递归建立 VP 树
 
@@ -103,7 +104,7 @@ def _build_vptree_recursive(data: Iterable[_T],
 def build_vptree(points: Iterable[_T],
                  dist_fn: Callable[[_T, _T], float] = euclidean_distance,
                  max_leaf_size = 10
-                 ) -> Union[VPTInternalNode, PivotTable]:
+                 ) -> VPTreeNode:
     '''建立 VP 树'''
     return _build_vptree_recursive(points, dist_fn, max_leaf_size)
 
@@ -116,7 +117,7 @@ def _pivot_table_search(node: PivotTable,
         if (dist := dist_fn(point, query)) <= radius:
             yield point, dist, node.depth
 
-def _get_all_data(node: Union[VPTInternalNode, PivotTable],
+def _get_all_data(node: VPTreeNode,
                   query: _T,
                   dist_fn: Callable[[_T, _T], float] = euclidean_distance):
     if isinstance(node, PivotTable):
@@ -126,7 +127,7 @@ def _get_all_data(node: Union[VPTInternalNode, PivotTable],
         yield from _get_all_data(node.left, query, dist_fn)
         yield from _get_all_data(node.right, query, dist_fn)
 
-def range_search(node: Union[VPTInternalNode, PivotTable], 
+def range_search(node: VPTreeNode, 
                  query: _T, 
                  radius: float, 
                  dist_fn: Callable[[_T, _T], float] = euclidean_distance):
