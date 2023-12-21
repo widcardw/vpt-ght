@@ -4,7 +4,7 @@ from ghtree.ghtree import build_ghtree, range_query
 import string
 import random
 from typing import Iterable
-from common.distance_functions import euclidean_distance, edit_distance
+from common.distance_functions import euclidean_distance, my_edit_distance as edit_distance
 
 
 def test_vptree_vector(points: np.ndarray, queries: np.ndarray, radius: float):
@@ -68,7 +68,7 @@ def test_ghtree_edit(points: Iterable[str], queries: Iterable[str], radius: floa
 def test_edit():
     point_num = 1000
     query_num = 3
-    radius = 10.
+    radius = 15
     min_length = 10
     max_length = 20
     points = [_generate_rand_string(random.randrange(min_length, max_length))
