@@ -1,12 +1,12 @@
 import numpy as np
-import editdistance
+# import editdistance
 
 def euclidean_distance(x: np.ndarray, y: np.ndarray) -> float:
     '''欧氏距离'''
     return np.linalg.norm(x - y)
 
 '''编辑距离，需要使用 `pip install editdistance` 安装'''
-edit_distance = editdistance.eval
+# edit_distance = editdistance.eval
 
 '''如果进行了替换，则距离+2，插入或删除则距离+1'''
 def my_edit_distance(x: str, y: str) -> float:
