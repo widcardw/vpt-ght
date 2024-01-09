@@ -39,19 +39,22 @@ def test_ghtree_vector(points: np.ndarray, queries: np.ndarray, radius: float):
 
 def test_vector():
     point_num, dim = 1000, 5
-    query_num = 3
+    query_num = 5
     radius = 0.25
     points = np.random.rand(point_num, dim)
     queries = np.random.rand(query_num, dim)
     test_vptree_vector(points, queries, radius)
-    # test_ghtree_vector(points, queries, radius)
+    test_ghtree_vector(points, queries, radius)
 
 
 def _generate_rand_string(length = 10):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def test_vptree_edit(points: Iterable[str], queries: Iterable[str], radius: float):
+    t = time.time()
     vpt = build_vptree(points, edit_distance)
+    end_t = time.time()
+    print(f'--------- VP Tree built in {end_t - t}s --------')
     for query in queries:
         print(f'--- query: {query} ---')
         count = 0
@@ -62,7 +65,10 @@ def test_vptree_edit(points: Iterable[str], queries: Iterable[str], radius: floa
         print(f'------ {count} results ------')
 
 def test_ghtree_edit(points: Iterable[str], queries: Iterable[str], radius: float):
+    t = time.time()
     ght = build_ghtree(points, edit_distance)
+    end_t = time.time()
+    print(f'--------- GH Tree built in {end_t - t}s --------')
     for query in queries:
         print(f'--- query: {query} ---')
         count = 0
@@ -74,7 +80,7 @@ def test_ghtree_edit(points: Iterable[str], queries: Iterable[str], radius: floa
 
 def test_edit():
     point_num = 1000
-    query_num = 3
+    query_num = 5
     radius = 15
     min_length = 10
     max_length = 20
@@ -84,7 +90,7 @@ def test_edit():
                for _ in range(query_num)]
     
     test_vptree_edit(points, queries, radius)
-    # test_ghtree_edit(points, queries, radius)
+    test_ghtree_edit(points, queries, radius)
     
 if __name__ == '__main__':
     # test_vector()

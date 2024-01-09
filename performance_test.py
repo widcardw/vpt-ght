@@ -38,9 +38,9 @@ def test_ghtree_vector(points: np.ndarray, queries: np.ndarray, radius: float):
     print(f'{len(queries)} queries finished in {end_t - t}s')
 
 def test_vector():
-    point_num, dim = 10_000, 5
+    point_num, dim = 10_000, 10
     query_num = 500
-    radius = 0.2
+    radius = 1.
     points = np.random.rand(point_num, dim)
     queries = np.random.rand(query_num, dim)
     test_ghtree_vector(points, queries, radius)
@@ -79,8 +79,8 @@ def test_ghtree_edit(points: Iterable[str], queries: Iterable[str], radius: floa
     print(f'{len(queries)} queries finished in {end_t - t}s')
 
 def test_edit():
-    point_num = 1_000
-    query_num = 200
+    point_num = 2_000
+    query_num = 100
     radius = 15
     min_length = 10
     max_length = 20
