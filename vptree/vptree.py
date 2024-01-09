@@ -127,7 +127,7 @@ def _get_all_data(node: VPTreeNode,
         yield from _get_all_data(node.left, query, dist_fn)
         yield from _get_all_data(node.right, query, dist_fn)
 
-def range_search(node: VPTreeNode, 
+def vp_range_query(node: VPTreeNode, 
                  query: _T, 
                  radius: float, 
                  dist_fn: Callable[[_T, _T], float] = euclidean_distance):
@@ -143,7 +143,7 @@ def range_search(node: VPTreeNode,
             yield from _get_all_data(node.left, query, dist_fn)
         # 球内侧不能排除
         elif dist_fn(query, node.pivot) - node.split_radius <= radius:
-            yield from range_search(node.left, query, radius, dist_fn)
+            yield from vp_range_query(node.left, query, radius, dist_fn)
         # 球外侧不能排除
         if dist_fn(node.pivot, query) + radius > node.split_radius:
-            yield from range_search(node.right, query, radius, dist_fn)
+            yield from vp_range_query(node.right, query, radius, dist_fn)

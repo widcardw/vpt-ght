@@ -62,7 +62,7 @@ def build_ghtree(points: Iterable[_T],
     '''
     return _build_ghtree_recursive(points, dist_fn, max_leaf_size)
 
-def range_query(node: GHTreeNode,
+def gh_range_query(node: GHTreeNode,
                 query: _T,
                 radius: float,
                 dist_fn: Callable[[_T, _T], float] = euclidean_distance):
@@ -86,10 +86,10 @@ def range_query(node: GHTreeNode,
             yield node.c2, dist, node.depth
         # 无法排除左子树，则搜索左子树
         if dist_fn(query, node.c1) - dist_fn(query, node.c2) <= 2 * radius:
-            yield from range_query(node.left, query, radius, dist_fn)
+            yield from gh_range_query(node.left, query, radius, dist_fn)
         # 无法排除右子树，则搜索右子树
         if dist_fn(query, node.c2) - dist_fn(query, node.c1) < 2 * radius:
-            yield from range_query(node.right, query, radius, dist_fn)
+            yield from gh_range_query(node.right, query, radius, dist_fn)
 
 def _build_ghtree_recursive(data: Iterable[_T],
                             dist_fn: Callable[[_T, _T], float],
